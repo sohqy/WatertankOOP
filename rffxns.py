@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 """
-Function file for handling rainfall input 
+RAINFALL AND SIGNAL MANAGEMENT MODULE. 
+======================================
+    Functions for handling rainfall data, disaggregating data or padding data into the correct resolution. 
+
 """
 import pandas as pd
 import numpy as np
@@ -17,8 +20,8 @@ def read_historicaldata():
     hist_rf = pd.read_csv('full2010-2018data.csv')
     hist_rf.Datetime = pd.to_datetime(hist_rf.Datetime)  # This is the slow part of reading historical data. 
     hist_rf.set_index('Datetime', inplace = True)    
+    hist_rf['Date'] = hist_rf.index.date
     
-    # hist_rf['Date'] = hist_rf.index.date
     # hist_rf['Time'] = hist_rf.index.time
     # hist_rf['Year'] = hist_rf.index.year
     # hist_rf['Month'] = hist_rf.index.month 
@@ -77,6 +80,16 @@ def padinput(A, f):
     
     return np.concatenate(rfs)
 
+def Aggregate(A, s):
+    """
+    """
+    
+    A = np.sum(A.reshape(int(len(A))/s, s), axis = 1)
+    
+    return A
+    
+
+# ===== ANALYSIS/RAINFALL STATISTICS CALCULATION FUNCTIONS. 
 # ===== ADAPTED FROM RFANALYSIS. NEED TO RECONCILIATE BOTH FILES? 
 def prof_maxcont(A):
     """
