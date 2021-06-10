@@ -5,7 +5,6 @@ Object declaration and functions file for watertank and opening objects.
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-import pandas as pd
 
 # ========== TANKS ==========
 class watertank:
@@ -452,6 +451,8 @@ class optorifice(orifice):
         self.mode = mode
         orifice.__init__(self, name, height, amax, sourcetank, destank)
         
+        self.qmax = self.Cd * self.amax * np.sqrt(2*self.g*(self.source.tkhght - self.height))
+        
         if self.mode == 'A':            # Input signal is an orifice area signal
             self.q = []
             self.area = intsignal
@@ -466,6 +467,13 @@ class optorifice(orifice):
             i : timestep index
         """
         if self.mode == 'Q':
+            
+            if self.q[i] > self.qmax: # Caps the outflow to the maximum allowable. 
+                self.q[i] = self.qmax
+            
+            if self.q[i] > self.source.volume[-1]: # Limits outflow to what is available in the tank
+                self.q[i] = self.source.volume[-1]
+            
             return self.q[i]
         
         elif self.mode == 'A':  # This is the computeflow equivalent function
