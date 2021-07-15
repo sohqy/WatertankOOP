@@ -17,7 +17,7 @@ def read_historicaldata():
     OUTPUTS:
         DATAFRAME with a Datetime index and single 'Rainfall' column. 
     """
-    hist_rf = pd.read_csv('full2010-2018data.csv')
+    hist_rf = pd.read_csv(r'C:\Users\sohqi\Documents\PhD Smart Sensing\Programs\Model\Data\full2010-2018data.csv')
     hist_rf.Datetime = pd.to_datetime(hist_rf.Datetime)  # This is the slow part of reading historical data. 
     hist_rf.set_index('Datetime', inplace = True)    
     hist_rf['Date'] = hist_rf.index.date

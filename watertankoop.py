@@ -45,6 +45,12 @@ class watertank:
         '''Access stored volume array'''
         return np.array(self.volume)
     
+    def Info(self):
+        return self.__dict__
+    
+    def ClassName(self):
+        return self.__class__
+    
     def massbalance(self, inflows, outflows):   # Tank dynamics discretised 
         """
         Calculates new water level based on the total inflow and outflow volumes
@@ -143,6 +149,12 @@ class opening:
         '''Accesses the flow volume storage array'''
         return np.array(self.q)
         
+    def Info(self):
+        return self.__dict__
+    
+    def ClassName(self):
+        return self.__class__
+    
     def computeflow(self):     # Ensures that this method is written 
         '''Main flow calculation function, to be written by individual opening types'''
         raise NotImplementedError()  # This prompts for derived classes to overwrite this function
@@ -243,7 +255,7 @@ class weir(opening):
         sourcetank : flow source tank object 
         destank : flow destination tank object or name
     """
-    def __init__(self, name, length, height, sourcetank, destank):
+    def __init__(self, name, height, length, sourcetank, destank):
         self.height = height 
         self.length = length
         opening.__init__(self, name, sourcetank, destank)
